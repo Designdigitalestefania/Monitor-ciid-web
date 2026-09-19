@@ -4,7 +4,6 @@ import {
   COLORES_ETAPA,
   ETAPAS_ORDEN,
   type ExpedienteDemo,
-  type Etapa,
 } from "@/lib/mock-data";
 
 interface Props {

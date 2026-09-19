@@ -157,3 +157,71 @@ export const RESUMEN_TENANT = {
     PRESERVED: 1,
   },
 };
+
+export interface PreservadoDemo {
+  id: string;
+  territorio: string;
+  lenguas: string[];
+  hashDocumental: string;
+  version: string;
+  preservadoEn: string;
+  preservadoPor: string;
+  totalTransiciones: number;
+}
+
+export const PRESERVADOS_DEMO: PreservadoDemo[] = [
+  {
+    id: "CIID-2026-0007",
+    territorio: "Sierra Norte · Oaxaca",
+    lenguas: ["Zapoteco (variante demo)"],
+    hashDocumental: "sha-local-c4e188ab",
+    version: "1.0.0",
+    preservadoEn: "2026-09-15T13:45:00Z",
+    preservadoPor: "Periodista Demo",
+    totalTransiciones: 8,
+  },
+  {
+    id: "CIID-2026-0010",
+    territorio: "Valles Centrales · Oaxaca",
+    lenguas: ["Mixteco (variante demo)"],
+    hashDocumental: "sha-local-88fa1203",
+    version: "1.0.0",
+    preservadoEn: "2026-09-14T18:20:00Z",
+    preservadoPor: "Editor Demo",
+    totalTransiciones: 7,
+  },
+];
+
+export interface CanalMetricaDemo {
+  canal: string;
+  total: number;
+}
+
+export interface EstadoMetricaDemo {
+  estado: string;
+  total: number;
+}
+
+export const METRICAS_DEMO = {
+  tenantId: "monitor-noticias",
+  totalExpedientes: 7,
+  totalDistribuciones: 12,
+  totalValidaciones: 4,
+  totalReportesCiudadanos: 5,
+  distribucionesPorCanal: [
+    { canal: "web", total: 4 },
+    { canal: "facebook", total: 3 },
+    { canal: "instagram", total: 2 },
+    { canal: "radio-comunitaria", total: 2 },
+    { canal: "whatsapp-breve", total: 1 },
+  ] as CanalMetricaDemo[],
+  validacionesPorEstado: [
+    { estado: "validada", total: 3 },
+    { estado: "pendiente", total: 1 },
+  ] as EstadoMetricaDemo[],
+  reportesPorEstado: [
+    { estado: "activo", total: 3 },
+    { estado: "vinculado", total: 1 },
+    { estado: "retirado", total: 1 },
+  ] as EstadoMetricaDemo[],
+};

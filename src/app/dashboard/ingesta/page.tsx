@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
+import { FormularioIngesta } from "@/components/FormularioIngesta";
 
 export default function IngestaPage() {
   return (
@@ -8,10 +9,13 @@ export default function IngestaPage() {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 p-6">
-          <h1 className="text-2xl font-bold text-slate-100">Ingesta manual</h1>
-          <p className="mt-2 text-sm text-slate-400">
-            Próximamente: formulario para crear expedientes manualmente.
-          </p>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-slate-100">Ingesta manual</h1>
+            <p className="mt-1 text-sm text-slate-400">
+              Ingresa información al pipeline CIID con trazabilidad completa.
+            </p>
+          </div>
+          <FormularioIngesta />
         </main>
       </div>
     </div>
