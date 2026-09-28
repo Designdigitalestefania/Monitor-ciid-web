@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del frontend
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: monitor-ciid-web
 
       - name: Checkout del backend
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: Designdigitalestefania/Monitor-ciid-mexico
           path: ciid-mexico
