@@ -34,23 +34,24 @@ jobs:
           npm run build
           echo "=== Verificando dist/ del backend ==="
           ls -la dist/
-          test -f dist/index.d.ts || (echo "ERROR: dist/index.d.ts no existe" && exit 1)
-          test -f dist/index.js || (echo "ERROR: dist/index.js no existe" && exit 1)
+          test -f dist/index.d.ts
+          test -f dist/index.js
 
       - name: Install frontend dependencies
         working-directory: monitor-ciid-web
         run: npm install --no-audit --no-fund
 
-      - name: Forzar dist/ del backend en node_modules
+      - name: Verificar resolucion de ciid-mexico
         working-directory: monitor-ciid-web
         run: |
-          rm -rf node_modules/ciid-mexico
-          mkdir -p node_modules/ciid-mexico
-          cp -r ../ciid-mexico/dist node_modules/ciid-mexico/dist
-          cp ../ciid-mexico/package.json node_modules/ciid-mexico/package.json
-          echo "=== Verificando node_modules/ciid-mexico ==="
+          echo "=== node_modules/ciid-mexico ==="
           ls -la node_modules/ciid-mexico/
-          ls -la node_modules/ciid-mexico/dist/
+          echo ""
+          echo "=== node_modules/ciid-mexico/dist ==="
+          ls -la node_modules/ciid-mexico/dist/ 2>&1 || echo "NO EXISTE dist/"
+          echo ""
+          echo "=== package.json de ciid-mexico ==="
+          cat node_modules/ciid-mexico/package.json
 
       - name: Lint
         working-directory: monitor-ciid-web
