@@ -11,6 +11,7 @@
     "ci": "npm run lint && npm run typecheck && npm run build"
   },
   "dependencies": {
+    "ciid-mexico": "file:../ciid-mexico",
     "next": "16.3.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

@@ -1,12 +1,12 @@
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import {
-  EXPEDIENTES_DEMO,
   ETIQUETAS_ETAPA,
   COLORES_ETAPA,
   ETAPAS_ORDEN,
   type Etapa,
 } from "@/lib/mock-data";
+import { getSnapshot, aResumen } from "@/lib/ciid";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -15,13 +15,18 @@ interface Props {
 
 export default async function ExpedientePage({ params }: Props) {
   const { id } = await params;
-  const expediente = EXPEDIENTES_DEMO.find((e) => e.id === id);
+  const snapshot = getSnapshot();
+  const expediente = snapshot.expedientes
+    .map(aResumen)
+    .find((e) => e.id === id);
 
   if (!expediente) {
     notFound();
   }
 
-  const etapaActualIdx = ETAPAS_ORDEN.indexOf(expediente.etapaActual);
+  const etapaActualIdx = ETAPAS_ORDEN.indexOf(
+    expediente.etapaActual as Etapa
+  );
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -36,9 +41,11 @@ export default async function ExpedientePage({ params }: Props) {
             </h1>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <span
-                className={`rounded px-2 py-1 text-xs font-semibold text-white ${COLORES_ETAPA[expediente.etapaActual]}`}
+                className={`rounded px-2 py-1 text-xs font-semibold text-white ${
+                  COLORES_ETAPA[expediente.etapaActual as Etapa]
+                }`}
               >
-                {ETIQUETAS_ETAPA[expediente.etapaActual]}
+                {ETIQUETAS_ETAPA[expediente.etapaActual as Etapa]}
               </span>
               <span className="rounded bg-slate-800 px-2 py-1 text-xs text-slate-300">
                 {expediente.origen}
@@ -115,12 +122,16 @@ export default async function ExpedientePage({ params }: Props) {
                   <div className="flex justify-between">
                     <dt className="text-slate-500">Actualizado</dt>
                     <dd className="text-slate-300">
-                      {new Date(expediente.actualizadoEn).toLocaleDateString("es-MX")}
+                      {new Date(expediente.actualizadoEn).toLocaleDateString(
+                        "es-MX"
+                      )}
                     </dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-slate-500">Transiciones</dt>
-                    <dd className="text-slate-300">{expediente.totalTransiciones}</dd>
+                    <dd className="text-slate-300">
+                      {expediente.totalTransiciones}
+                    </dd>
                   </div>
                 </dl>
               </section>
