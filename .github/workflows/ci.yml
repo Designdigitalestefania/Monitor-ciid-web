@@ -21,6 +21,18 @@ jobs:
         with:
           repository: Designdigitalestefania/Monitor-ciid-mexico
           path: ciid-mexico
+          token: ${{ secrets.CIID_BACKEND_TOKEN || github.token }}
+
+      - name: Verificar estructura clonada
+        run: |
+          echo "=== Estructura raíz ==="
+          ls -la
+          echo ""
+          echo "=== Frontend ==="
+          ls -la monitor-ciid-web | head -10
+          echo ""
+          echo "=== Backend ==="
+          ls -la ciid-mexico | head -10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,12 +42,21 @@ jobs:
       - name: Build backend
         working-directory: ciid-mexico
         run: |
+          echo "=== Instalando dependencias del backend ==="
           npm install --no-audit --no-fund
+          echo "=== Compilando backend ==="
           npm run build
+          echo "=== Verificando dist/ ==="
+          ls -la dist/ | head -10
 
       - name: Install frontend dependencies
         working-directory: monitor-ciid-web
-        run: npm install --no-audit --no-fund
+        run: |
+          echo "=== Verificando que ../ciid-mexico existe ==="
+          ls -la ../ciid-mexico | head -5
+          echo ""
+          echo "=== Instalando dependencias del frontend ==="
+          npm install --no-audit --no-fund
 
       - name: Lint
         working-directory: monitor-ciid-web
