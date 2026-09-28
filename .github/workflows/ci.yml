@@ -11,56 +11,12 @@ jobs:
     name: Lint - Typecheck - Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del frontend
-        uses: actions/checkout@v4
-        with:
-          path: monitor-ciid-web
-
-      - name: Checkout del backend
-        uses: actions/checkout@v4
-        with:
-          repository: Designdigitalestefania/Monitor-ciid-mexico
-          path: ciid-mexico
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Build backend
-        working-directory: ciid-mexico
-        run: |
-          npm install --no-audit --no-fund
-          npm run build
-          echo "=== Verificando dist/ del backend ==="
-          ls -la dist/
-          test -f dist/index.d.ts
-          test -f dist/index.js
-
-      - name: Install frontend dependencies
-        working-directory: monitor-ciid-web
-        run: npm install --no-audit --no-fund
-
-      - name: Verificar resolucion de ciid-mexico
-        working-directory: monitor-ciid-web
-        run: |
-          echo "=== node_modules/ciid-mexico ==="
-          ls -la node_modules/ciid-mexico/
-          echo ""
-          echo "=== node_modules/ciid-mexico/dist ==="
-          ls -la node_modules/ciid-mexico/dist/ 2>&1 || echo "NO EXISTE dist/"
-          echo ""
-          echo "=== package.json de ciid-mexico ==="
-          cat node_modules/ciid-mexico/package.json
-
-      - name: Lint
-        working-directory: monitor-ciid-web
-        run: npm run lint
-
-      - name: Typecheck
-        working-directory: monitor-ciid-web
-        run: npx tsc --noEmit
-
-      - name: Build
-        working-directory: monitor-ciid-web
-        run: npm run build
+          cache: 'npm'
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run build
