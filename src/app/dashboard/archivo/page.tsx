@@ -1,6 +1,5 @@
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
-import { ArchivoPatrimonial } from "@/components/ArchivoPatrimonial";
 
 export default function ArchivoPage() {
   return (
@@ -17,7 +16,16 @@ export default function ArchivoPage() {
               Memoria digital de las comunidades, con trazabilidad completa.
             </p>
           </div>
-          <ArchivoPatrimonial />
+
+          <div className="rounded-lg border border-slate-800 bg-slate-900 p-8 text-center">
+            <p className="text-sm text-slate-400">
+              Aún no hay expedientes preservados en este tenant.
+            </p>
+            <p className="mt-2 text-xs text-slate-500">
+              Cuando el equipo editorial apruebe y preserve información,
+              aparecerá aquí con su hash documental y evidencia de verificación.
+            </p>
+          </div>
         </main>
       </div>
     </div>

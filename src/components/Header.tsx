@@ -16,8 +16,8 @@ export function Header() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="rounded-md bg-red-600 px-2 py-1 text-xs font-bold tracking-wider text-white">
-            DEMO
+          <span className="rounded-md bg-emerald-600 px-2 py-1 text-xs font-bold tracking-wider text-white">
+            v1.0
           </span>
           <span className="text-xs text-slate-400">
             Monitor Noticias

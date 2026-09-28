@@ -1,11 +1,9 @@
 /**
- * Adaptador entre el dashboard web y el ecosistema CIID real.
+ * Adaptador entre el dashboard web y el ecosistema CIID.
  *
- * Este archivo instancia los servicios de `ciid-mexico` y expone
- * funciones limpias para que las páginas del dashboard las consuman.
- *
- * En produccion, los datos vienen de SQLite o PostgreSQL. En este
- * piloto, los servicios viven en memoria con datos de demostracion.
+ * Monitor Noticias es el primer tenant operativo del piloto.
+ * El dashboard consume datos reales del backend publicado en
+ * @designdigitalestefania/ciid-mexico.
  */
 
 import {
@@ -16,6 +14,9 @@ import {
   type Expediente,
   type Tenant,
 } from "@designdigitalestefania/ciid-mexico";
+
+export const TENANT_ID = "monitor-noticias";
+export const TENANT_NOMBRE = "Monitor Noticias";
 
 export interface SnapshotCIID {
   tenants: Tenant[];
@@ -36,71 +37,28 @@ export interface ExpedienteResumen {
 }
 
 /**
- * Crea un snapshot completo del ecosistema CIID para el dashboard.
+ * Crea el snapshot operativo del tenant Monitor Noticias.
  *
- * Sembramos un tenant, un actor y varios expedientes con etapas
- * distintas para que el dashboard muestre datos coherentes.
+ * En la version v1.0 los expedientes viven en memoria dentro de la
+ * sesion del servidor. La persistencia con base de datos llega en v1.1.
  */
-export function crearSnapshotDemo(): SnapshotCIID {
+export function crearSnapshotOperativo(): SnapshotCIID {
   const tenants = new TenantsService();
   const ingest = new IngestService();
 
-  // 1. Crear tenant
   const tenant = tenants.crear({
-    id: "monitor-noticias",
-    nombre: "Monitor Noticias",
+    id: TENANT_ID,
+    nombre: TENANT_NOMBRE,
     tipo: "medio",
     territorioId: "oaxaca",
   });
 
-  // 2. Crear actor (periodista)
   const actorActual = crearActor({
-    userId: "u-p1",
-    nombre: "Periodista Demo",
+    userId: "periodista-01",
+    nombre: "Mesa editorial · Monitor Noticias",
     rol: "periodista",
     tenantId: tenant.id,
   });
-
-  // 3. Sembrar expedientes con distintas etapas
-  const seeds = [
-    {
-      id: "CIID-2026-0001",
-      origen: "ciudadania" as const,
-      territorio: { estado: "Oaxaca", region: "Sierra Norte" },
-    },
-    {
-      id: "CIID-2026-0002",
-      origen: "institucional" as const,
-      territorio: { estado: "Oaxaca", municipio: "Oaxaca de Juárez" },
-    },
-    {
-      id: "CIID-2026-0003",
-      origen: "ciudadania" as const,
-      territorio: { estado: "Oaxaca", region: "Valles Centrales" },
-    },
-    {
-      id: "CIID-2026-0004",
-      origen: "institucional" as const,
-      territorio: { estado: "Oaxaca", municipio: "Oaxaca de Juárez" },
-    },
-    {
-      id: "CIID-2026-0005",
-      origen: "ciudadania" as const,
-      territorio: { estado: "Oaxaca", region: "Sierra Norte" },
-    },
-  ];
-
-  for (const seed of seeds) {
-    ingest.recibir(
-      {
-        id: seed.id,
-        tenantId: tenant.id,
-        origen: seed.origen,
-        territorio: seed.territorio,
-      },
-      tenant
-    );
-  }
 
   return {
     tenants: [tenant],
@@ -109,10 +67,6 @@ export function crearSnapshotDemo(): SnapshotCIID {
   };
 }
 
-/**
- * Convierte un Expediente del backend en un ExpedienteResumen
- * listo para mostrar en la bandeja del dashboard.
- */
 export function aResumen(exp: Expediente): ExpedienteResumen {
   const partes = [
     exp.territorio.region,
@@ -152,15 +106,11 @@ function titularPorOrigen(origen: string): string {
   }
 }
 
-/**
- * Instancia perezosa de los servicios CIID.
- * Se reutilizan entre llamadas para no perder estado.
- */
 let _snapshot: SnapshotCIID | null = null;
 
 export function getSnapshot(): SnapshotCIID {
   if (!_snapshot) {
-    _snapshot = crearSnapshotDemo();
+    _snapshot = crearSnapshotOperativo();
   }
   return _snapshot;
 }
