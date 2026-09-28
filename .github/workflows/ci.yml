@@ -11,12 +11,40 @@ jobs:
     name: Lint - Typecheck - Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout del frontend
+        uses: actions/checkout@v4
+        with:
+          path: Monitor-ciid-web
+
+      - name: Checkout del backend
+        uses: actions/checkout@v4
+        with:
+          repository: Designdigitalestefania/Monitor-ciid-mexico
+          path: Monitor-ciid-mexico
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-      - run: npm install --no-audit --no-fund
-      - run: npm run lint
-      - run: npx tsc --noEmit
-      - run: npm run build
+
+      - name: Build backend
+        working-directory: Monitor-ciid-mexico
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+
+      - name: Install frontend dependencies
+        working-directory: Monitor-ciid-web
+        run: npm install --no-audit --no-fund
+
+      - name: Lint
+        working-directory: Monitor-ciid-web
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: Monitor-ciid-web
+        run: npx tsc --noEmit
+
+      - name: Build
+        working-directory: Monitor-ciid-web
+        run: npm run build
