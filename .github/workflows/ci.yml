@@ -14,13 +14,13 @@ jobs:
       - name: Checkout del frontend
         uses: actions/checkout@v4
         with:
-          path: Monitor-ciid-web
+          path: monitor-ciid-web
 
       - name: Checkout del backend
         uses: actions/checkout@v4
         with:
           repository: Designdigitalestefania/Monitor-ciid-mexico
-          path: Monitor-ciid-mexico
+          path: ciid-mexico
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,23 +28,23 @@ jobs:
           node-version: '22'
 
       - name: Build backend
-        working-directory: Monitor-ciid-mexico
+        working-directory: ciid-mexico
         run: |
           npm install --no-audit --no-fund
           npm run build
 
       - name: Install frontend dependencies
-        working-directory: Monitor-ciid-web
+        working-directory: monitor-ciid-web
         run: npm install --no-audit --no-fund
 
       - name: Lint
-        working-directory: Monitor-ciid-web
+        working-directory: monitor-ciid-web
         run: npm run lint
 
       - name: Typecheck
-        working-directory: Monitor-ciid-web
+        working-directory: monitor-ciid-web
         run: npx tsc --noEmit
 
       - name: Build
-        working-directory: Monitor-ciid-web
+        working-directory: monitor-ciid-web
         run: npm run build
