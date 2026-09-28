@@ -15,7 +15,7 @@ import {
   type Actor,
   type Expediente,
   type Tenant,
-} from "ciid-mexico";
+} from "@designdigitalestefania/ciid-mexico";
 
 export interface SnapshotCIID {
   tenants: Tenant[];
